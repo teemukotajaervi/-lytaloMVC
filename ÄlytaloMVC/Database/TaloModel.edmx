@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MobiiliTaloModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Sauna">
+          <Key>
+            <PropertyRef Name="SaunaId" />
+          </Key>
+          <Property Name="SaunaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nimi" Type="nvarchar" MaxLength="100" />
+          <Property Name="SaunanTila" Type="nvarchar" MaxLength="1" />
+          <Property Name="Lampotila" Type="int" />
+          <Property Name="Paivitetty" Type="smalldatetime" />
+          <Property Name="TaloId" Type="int" />
+        </EntityType>
+        <EntityType Name="Talo">
+          <Key>
+            <PropertyRef Name="TaloId" />
+          </Key>
+          <Property Name="TaloId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nimi" Type="nvarchar" MaxLength="100" />
+          <Property Name="Lampotila" Type="int" />
+          <Property Name="TavoiteLampotila" Type="int" />
+          <Property Name="Paivitetty" Type="smalldatetime" />
+        </EntityType>
+        <EntityType Name="Valo">
+          <Key>
+            <PropertyRef Name="ValoId" />
+          </Key>
+          <Property Name="ValoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nimi" Type="nvarchar" MaxLength="100" />
+          <Property Name="ValonTila" Type="nvarchar" MaxLength="1" />
+          <Property Name="Valonmaara" Type="int" />
+          <Property Name="Paivitetty" Type="smalldatetime" />
+          <Property Name="TaloId" Type="int" />
+        </EntityType>
+        <Association Name="FK_SaunaTalo">
+          <End Role="Talo" Type="Self.Talo" Multiplicity="0..1" />
+          <End Role="Sauna" Type="Self.Sauna" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Talo">
+              <PropertyRef Name="TaloId" />
+            </Principal>
+            <Dependent Role="Sauna">
+              <PropertyRef Name="TaloId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ValoTalo">
+          <End Role="Talo" Type="Self.Talo" Multiplicity="0..1" />
+          <End Role="Valo" Type="Self.Valo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Talo">
+              <PropertyRef Name="TaloId" />
+            </Principal>
+            <Dependent Role="Valo">
+              <PropertyRef Name="TaloId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MobiiliTaloModelStoreContainer">
+          <EntitySet Name="Sauna" EntityType="Self.Sauna" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Talo" EntityType="Self.Talo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Valo" EntityType="Self.Valo" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_SaunaTalo" Association="Self.FK_SaunaTalo">
+            <End Role="Talo" EntitySet="Talo" />
+            <End Role="Sauna" EntitySet="Sauna" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ValoTalo" Association="Self.FK_ValoTalo">
+            <End Role="Talo" EntitySet="Talo" />
+            <End Role="Valo" EntitySet="Valo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MobiiliTaloModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Sauna">
+          <Key>
+            <PropertyRef Name="SaunaId" />
+          </Key>
+          <Property Name="SaunaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nimi" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SaunanTila" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="Lampotila" Type="Int32" />
+          <Property Name="Paivitetty" Type="DateTime" Precision="0" />
+          <Property Name="TaloId" Type="Int32" />
+          <NavigationProperty Name="Talo" Relationship="Self.FK_SaunaTalo" FromRole="Sauna" ToRole="Talo" />
+        </EntityType>
+        <EntityType Name="Talo">
+          <Key>
+            <PropertyRef Name="TaloId" />
+          </Key>
+          <Property Name="TaloId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nimi" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Lampotila" Type="Int32" />
+          <Property Name="TavoiteLampotila" Type="Int32" />
+          <Property Name="Paivitetty" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Sauna" Relationship="Self.FK_SaunaTalo" FromRole="Talo" ToRole="Sauna" />
+          <NavigationProperty Name="Valo" Relationship="Self.FK_ValoTalo" FromRole="Talo" ToRole="Valo" />
+        </EntityType>
+        <EntityType Name="Valo">
+          <Key>
+            <PropertyRef Name="ValoId" />
+          </Key>
+          <Property Name="ValoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nimi" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ValonTila" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="Valonmaara" Type="Int32" />
+          <Property Name="Paivitetty" Type="DateTime" Precision="0" />
+          <Property Name="TaloId" Type="Int32" />
+          <NavigationProperty Name="Talo" Relationship="Self.FK_ValoTalo" FromRole="Valo" ToRole="Talo" />
+        </EntityType>
+        <Association Name="FK_SaunaTalo">
+          <End Role="Talo" Type="Self.Talo" Multiplicity="0..1" />
+          <End Role="Sauna" Type="Self.Sauna" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Talo">
+              <PropertyRef Name="TaloId" />
+            </Principal>
+            <Dependent Role="Sauna">
+              <PropertyRef Name="TaloId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ValoTalo">
+          <End Role="Talo" Type="Self.Talo" Multiplicity="0..1" />
+          <End Role="Valo" Type="Self.Valo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Talo">
+              <PropertyRef Name="TaloId" />
+            </Principal>
+            <Dependent Role="Valo">
+              <PropertyRef Name="TaloId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MobiiliTaloEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Sauna" EntityType="Self.Sauna" />
+          <EntitySet Name="Talo" EntityType="Self.Talo" />
+          <EntitySet Name="Valo" EntityType="Self.Valo" />
+          <AssociationSet Name="FK_SaunaTalo" Association="Self.FK_SaunaTalo">
+            <End Role="Talo" EntitySet="Talo" />
+            <End Role="Sauna" EntitySet="Sauna" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ValoTalo" Association="Self.FK_ValoTalo">
+            <End Role="Talo" EntitySet="Talo" />
+            <End Role="Valo" EntitySet="Valo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MobiiliTaloModelStoreContainer" CdmEntityContainer="MobiiliTaloEntities">
+          <EntitySetMapping Name="Sauna">
+            <EntityTypeMapping TypeName="MobiiliTaloModel.Sauna">
+              <MappingFragment StoreEntitySet="Sauna">
+                <ScalarProperty Name="SaunaId" ColumnName="SaunaId" />
+                <ScalarProperty Name="Nimi" ColumnName="Nimi" />
+                <ScalarProperty Name="SaunanTila" ColumnName="SaunanTila" />
+                <ScalarProperty Name="Lampotila" ColumnName="Lampotila" />
+                <ScalarProperty Name="Paivitetty" ColumnName="Paivitetty" />
+                <ScalarProperty Name="TaloId" ColumnName="TaloId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Talo">
+            <EntityTypeMapping TypeName="MobiiliTaloModel.Talo">
+              <MappingFragment StoreEntitySet="Talo">
+                <ScalarProperty Name="TaloId" ColumnName="TaloId" />
+                <ScalarProperty Name="Nimi" ColumnName="Nimi" />
+                <ScalarProperty Name="Lampotila" ColumnName="Lampotila" />
+                <ScalarProperty Name="TavoiteLampotila" ColumnName="TavoiteLampotila" />
+                <ScalarProperty Name="Paivitetty" ColumnName="Paivitetty" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Valo">
+            <EntityTypeMapping TypeName="MobiiliTaloModel.Valo">
+              <MappingFragment StoreEntitySet="Valo">
+                <ScalarProperty Name="ValoId" ColumnName="ValoId" />
+                <ScalarProperty Name="Nimi" ColumnName="Nimi" />
+                <ScalarProperty Name="ValonTila" ColumnName="ValonTila" />
+                <ScalarProperty Name="Valonmaara" ColumnName="Valonmaara" />
+                <ScalarProperty Name="Paivitetty" ColumnName="Paivitetty" />
+                <ScalarProperty Name="TaloId" ColumnName="TaloId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
